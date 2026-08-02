@@ -110,7 +110,7 @@ This runs, in order: `extract.py` → `load_raw.py` → `silver_clean_update.sql
 ## Testing
 
 ```bash
-pytest tests/test_pipeline.py -v
+pytest tests/test_data_quality.py -v
 ```
 
 Covers row count consistency across bronze/silver/gold, `corp_number` uniqueness, referential integrity across all four dimension joins, absence of leftover numeric junk in `_corrected` fields, and that the `gold_active_iowa_business` view matches the fact table row count.
