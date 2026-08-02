@@ -1,4 +1,30 @@
 ALTER TABLE silver_active_iowa_business
+DROP COLUMN ra_address_1_altered,
+DROP COLUMN ra_address_1_corrected,
+DROP COLUMN ra_address_2_altered,
+DROP COLUMN ra_address_2_corrected,
+DROP COLUMN ra_city_altered,
+DROP COLUMN ra_city_corrected,
+DROP COLUMN ra_zip_altered,
+DROP COLUMN ra_zip_corrected,
+DROP COLUMN ra_state_altered,
+DROP COLUMN ra_state_corrected,
+DROP COLUMN home_office_altered,
+DROP COLUMN home_office_corrected,
+DROP COLUMN ho_address_1_altered,
+DROP COLUMN ho_address_1_corrected,
+DROP COLUMN ho_address_2_altered,
+DROP COLUMN ho_address_2_corrected,
+DROP COLUMN ho_city_altered,
+DROP COLUMN ho_city_corrected,
+DROP COLUMN ho_zip_altered,
+DROP COLUMN ho_zip_corrected,
+DROP COLUMN ho_state_altered,
+DROP COLUMN ho_state_corrected,
+DROP COLUMN ho_country_altered,
+DROP COLUMN ho_country_corrected;
+
+ALTER TABLE silver_active_iowa_business
 -- ra
 ADD COLUMN ra_address_1_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ra_address_1_corrected VARCHAR(255),
@@ -16,7 +42,7 @@ ADD COLUMN ra_state_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ra_state_corrected VARCHAR(255),
 -- ho
 ADD COLUMN home_office_altered BOOLEAN DEFAULT FALSE,
-ADD COLUMN home_office_corrected VARCHAR(20),
+ADD COLUMN home_office_corrected VARCHAR(255),
 
 ADD COLUMN ho_address_1_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ho_address_1_corrected VARCHAR(255),
@@ -28,7 +54,7 @@ ADD COLUMN ho_city_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ho_city_corrected VARCHAR(255),
 
 ADD COLUMN ho_zip_altered BOOLEAN DEFAULT FALSE,
-ADD COLUMN ho_zip_corrected VARCHAR(20),
+ADD COLUMN ho_zip_corrected VARCHAR(255),
 
 ADD COLUMN ho_state_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ho_state_corrected VARCHAR(255),
@@ -37,9 +63,6 @@ ADD COLUMN ho_country_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ho_country_corrected VARCHAR(255);
 
 
--- initialise every _corrected column to its raw value first, so untouched rows
--- carry the real data forward instead of NULL. gold layer reads only from
--- these _corrected columns from here on.
 UPDATE silver_active_iowa_business
 SET
     ra_address_1_corrected = ra_address_1,
