@@ -6,16 +6,21 @@ from pathlib import Path
 from sqlalchemy import create_engine, text
 import os
 
-PROJECT_ROOT = Path(__file__).parent
-SRC_DIR = PROJECT_ROOT / "src"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SRC_DIR = Path(__file__).parent
+PROJECT_ROOT = SRC_DIR.parent
 LOG_DIR = PROJECT_ROOT / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "pipeline.log"
 
+# order matters: extract raw data, load it, then bronze -> silver -> gold
+# silver_clean.sql is superseded by silver_clean_update.sql, which is self-contained
 PIPELINE_STEPS = [
     "extract.py",
     "load_raw.py",
-    "bronze_load.sql",
     "silver_clean_update.sql",
     "gold_schema.sql",
 ]
@@ -32,11 +37,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_engine():
-    user = os.environ["DB_USER"]
-    password = os.environ["DB_PASSWORD"]
-    host = os.environ["DB_HOST"]
-    database = os.environ["DB_NAME"]
-    url = f"mysql+mysqlconnector://{user}:{password}@{host}/{database}"
+    user = os.getenv("MYSQL_USER")
+    password = os.getenv("MYSQL_PASSWORD")
+    host = os.getenv("MYSQL_HOST")
+    port = os.getenv("MYSQL_PORT")
+    database = os.getenv("MYSQL_DATABASE")
+    url = f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}"
     return create_engine(url)
 
 

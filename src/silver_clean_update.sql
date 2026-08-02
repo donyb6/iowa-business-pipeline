@@ -1,28 +1,7 @@
-ALTER TABLE silver_active_iowa_business
-DROP COLUMN ra_address_1_altered,
-DROP COLUMN ra_address_1_corrected,
-DROP COLUMN ra_address_2_altered,
-DROP COLUMN ra_address_2_corrected,
-DROP COLUMN ra_city_altered,
-DROP COLUMN ra_city_corrected,
-DROP COLUMN ra_zip_altered,
-DROP COLUMN ra_zip_corrected,
-DROP COLUMN ra_state_altered,
-DROP COLUMN ra_state_corrected,
-DROP COLUMN home_office_altered,
-DROP COLUMN home_office_corrected,
-DROP COLUMN ho_address_1_altered,
-DROP COLUMN ho_address_1_corrected,
-DROP COLUMN ho_address_2_altered,
-DROP COLUMN ho_address_2_corrected,
-DROP COLUMN ho_city_altered,
-DROP COLUMN ho_city_corrected,
-DROP COLUMN ho_zip_altered,
-DROP COLUMN ho_zip_corrected,
-DROP COLUMN ho_state_altered,
-DROP COLUMN ho_state_corrected,
-DROP COLUMN ho_country_altered,
-DROP COLUMN ho_country_corrected;
+DROP TABLE IF EXISTS silver_active_iowa_business;
+
+CREATE TABLE silver_active_iowa_business AS
+SELECT * FROM bronze_active_iowa_business;
 
 ALTER TABLE silver_active_iowa_business
 -- ra
