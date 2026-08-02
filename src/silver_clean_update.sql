@@ -38,6 +38,26 @@ ADD COLUMN ho_state_corrected VARCHAR(2),
 ADD COLUMN ho_country_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ho_country_corrected VARCHAR(255);
 
+
+-- initialise every _corrected column to its raw value first, so untouched rows
+-- carry the real data forward instead of NULL. gold layer reads only from
+-- these _corrected columns from here on.
+UPDATE silver_active_iowa_business
+SET
+    ra_address_1_corrected = ra_address_1,
+    ra_address_2_corrected = ra_address_2,
+    ra_city_corrected      = ra_city,
+    ra_zip_corrected       = ra_zip,
+    ra_state_corrected     = ra_state,
+    home_office_corrected  = home_office,
+    ho_address_1_corrected = ho_address_1,
+    ho_address_2_corrected = ho_address_2,
+    ho_city_corrected      = ho_city,
+    ho_zip_corrected       = ho_zip,
+    ho_state_corrected     = ho_state,
+    ho_country_corrected   = ho_country;
+
+
 UPDATE silver_active_iowa_business
 SET
     ra_address_1_altered = TRUE,
@@ -142,7 +162,8 @@ SET
     ho_country_corrected = NULL,
     ho_zip_altered = TRUE,
     ho_zip_corrected = ho_country
-WHERE ho_country REGEXP '^[0-9]+$';
+WHERE ho_country REGEXP '^[0-9]+$'
+AND ho_zip IS NULL;
 
 
 UPDATE silver_active_iowa_business
