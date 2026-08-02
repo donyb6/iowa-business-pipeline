@@ -170,18 +170,3 @@ FROM silver_active_iowa_business;
 SELECT ra_location, 
         ST_GeomFromText(ra_location) AS ra_test
 FROM silver_active_iowa_business;
-
-ALTER TABLE silver_active_iowa_business
-ADD ho_point POINT,
-ADD ra_point POINT;
-
-UPDATE silver_active_iowa_business
-SET 
-  ho_point = ST_GeomFromText(ho_location),
-  ra_point = ST_GeomFromText(ra_location)
-WHERE ho_location IS NOT NULL
-  AND ra_location IS NOT NULL;
-
-ALTER TABLE silver_active_iowa_business
-DROP COLUMN ho_location,
-DROP COLUMN ra_location;
