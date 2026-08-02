@@ -2,4 +2,5 @@ venv/
 .env
 __pycache__/
 logs/
+data/exports/*.csv
 data/raw/*.csv
