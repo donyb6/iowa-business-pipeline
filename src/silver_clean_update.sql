@@ -62,6 +62,51 @@ ADD COLUMN ho_state_corrected VARCHAR(255),
 ADD COLUMN ho_country_altered BOOLEAN DEFAULT FALSE,
 ADD COLUMN ho_country_corrected VARCHAR(255);
 
+UPDATE silver_active_iowa_business
+SET effective_date = STR_TO_DATE(effective_date, '%Y-%m-%d')
+WHERE effective_date IS NOT NULL;
+
+ALTER TABLE silver_active_iowa_business
+MODIFY effective_date DATE;
+
+UPDATE silver_active_iowa_business
+SET corporation_type = TRIM(corporation_type);
+
+UPDATE silver_active_iowa_business
+SET legal_name = TRIM(legal_name);
+
+UPDATE silver_active_iowa_business
+SET legal_name = REPLACE(legal_name, '"', '')
+WHERE legal_name LIKE '"%' OR legal_name LIKE '%"' OR legal_name LIKE '"%"';
+
+UPDATE silver_active_iowa_business
+SET ra_address_1 = REPLACE(ra_address_1, '"', '')
+WHERE ra_address_1 LIKE '"%' OR ra_address_1 LIKE '%"' OR ra_address_1 LIKE '"%"';
+
+UPDATE silver_active_iowa_business
+SET ra_city = TRIM(ra_city);
+
+UPDATE silver_active_iowa_business
+SET ra_state = TRIM(ra_state);
+
+UPDATE silver_active_iowa_business
+SET ra_zip = TRIM(ra_zip);
+
+UPDATE silver_active_iowa_business
+SET home_office = TRIM(home_office);
+
+UPDATE silver_active_iowa_business
+SET ho_city = TRIM(ho_city);
+
+UPDATE silver_active_iowa_business
+SET ho_state = TRIM(ho_state);
+
+UPDATE silver_active_iowa_business
+SET ho_zip = TRIM(ho_zip);
+
+UPDATE silver_active_iowa_business
+SET ho_city = REPLACE(ho_city, '"', '')
+WHERE ho_city LIKE '"%' OR ho_city LIKE '%"' OR ho_city LIKE '"%"';
 
 UPDATE silver_active_iowa_business
 SET

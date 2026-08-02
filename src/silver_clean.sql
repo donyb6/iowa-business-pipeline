@@ -25,34 +25,12 @@ MODIFY effective_date DATE;
 SELECT DISTINCT corporation_type, TRIM(corporation_type) AS trimmed_corporation_type
 FROM silver_active_iowa_business;
 
-UPDATE silver_active_iowa_business
-SET corporation_type = TRIM(corporation_type);
-
 SELECT legal_name, TRIM(legal_name) AS trimmed_legal_name
 FROM silver_active_iowa_business;
-
-UPDATE silver_active_iowa_business
-SET legal_name = TRIM(legal_name);
 
 SELECT legal_name, REPLACE(legal_name, '"', '') AS trimmed_legal_name
 FROM silver_active_iowa_business
 WHERE legal_name LIKE '"%' OR legal_name LIKE '%"' OR legal_name LIKE '"%"';
-
-UPDATE silver_active_iowa_business
-SET legal_name = REPLACE(legal_name, '"', '')
-WHERE legal_name LIKE '"%' OR legal_name LIKE '%"' OR legal_name LIKE '"%"';
-
-UPDATE silver_active_iowa_business
-SET registered_agent = TRIM(registered_agent);
-
-/*
-SELECT registered_agent, REPLACE(registered_agent, '"', '') AS trimmed_registered_agent
-FROM silver_active_iowa_business
-WHERE registered_agent LIKE '%"%';
-
-UPDATE silver_active_iowa_business
-SET registered_agent = REPLACE(registered_agent, '"', '')
-WHERE registered_agent LIKE '%"';*/
 
 SELECT ra_address_1, REPLACE(ra_address_1, '"', '') AS ra_1_cleaned
 FROM silver_active_iowa_business
@@ -62,37 +40,8 @@ SELECT ra_address_2, REPLACE(ra_address_2, '"', '') AS ra_2_cleaned
 FROM silver_active_iowa_business
 WHERE ra_address_2 LIKE '"%' OR ra_address_2 LIKE '%"' OR ra_address_2 LIKE '"%"';
 
-UPDATE silver_active_iowa_business
-SET ra_address_1 = REPLACE(ra_address_1, '"', '')
-WHERE ra_address_1 LIKE '"%' OR ra_address_1 LIKE '%"' OR ra_address_1 LIKE '"%"';
-
-UPDATE silver_active_iowa_business
-SET ra_city = TRIM(ra_city);
-
-UPDATE silver_active_iowa_business
-SET ra_state = TRIM(ra_state);
-
-UPDATE silver_active_iowa_business
-SET ra_zip = TRIM(ra_zip);
-
-UPDATE silver_active_iowa_business
-SET home_office = TRIM(home_office);
-
-UPDATE silver_active_iowa_business
-SET ho_city = TRIM(ho_city);
-
-UPDATE silver_active_iowa_business
-SET ho_state = TRIM(ho_state);
-
-UPDATE silver_active_iowa_business
-SET ho_zip = TRIM(ho_zip);
-
 SELECT ho_city, REPLACE(ho_city, '"', '') AS ho_city_cleaned
 FROM silver_active_iowa_business
-WHERE ho_city LIKE '"%' OR ho_city LIKE '%"' OR ho_city LIKE '"%"';
-
-UPDATE silver_active_iowa_business
-SET ho_city = REPLACE(ho_city, '"', '')
 WHERE ho_city LIKE '"%' OR ho_city LIKE '%"' OR ho_city LIKE '"%"';
 
 
@@ -152,10 +101,6 @@ WHERE ho_city REGEXP '^[A-Za-z]{2}$'; -- ho city entries (MO, NE, OP, TA, UP, DM
 -- prep ra_location and ho_location fields for geocoding
 SELECT ho_location, ra_location
 FROM silver_active_iowa_business;
-
-UPDATE silver_active_iowa_business
-SET ho_location = TRIM(REPLACE(ho_location, '"', '')),
-    ra_location = TRIM(REPLACE(ra_location, '"', ''));
 
 SELECT ho_location, ra_location
 FROM silver_active_iowa_business
