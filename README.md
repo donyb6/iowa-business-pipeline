@@ -32,7 +32,7 @@ active_iowa_businesses/
 │ ├── drop_gold_schema.sql
 │ └── run_pipeline.py
 ├── tests/
-│ └── test_pipeline.py
+│ └── test_data_quality.py
 ├── .env
 ├── requirements.txt
 └── README.md
