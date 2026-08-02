@@ -1,17 +1,20 @@
-# run_pipeline.py
 import logging
-import os
+import subprocess
 import sys
 from pathlib import Path
 
 from sqlalchemy import create_engine, text
+import os
 
-SRC_DIR = Path(__file__).parent / "src"
-LOG_FILE = Path(__file__).parent / "pipeline.log"
+PROJECT_ROOT = Path(__file__).parent
+SRC_DIR = PROJECT_ROOT / "src"
+LOG_DIR = PROJECT_ROOT / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+LOG_FILE = LOG_DIR / "pipeline.log"
 
-# pipeline order matters, bronze must load before silver, silver before gold
-# silver_clean.sql is superseded by silver_clean_update.sql, which is self-contained
-PIPELINE_FILES = [
+PIPELINE_STEPS = [
+    "extract.py",
+    "load_raw.py",
     "bronze_load.sql",
     "silver_clean_update.sql",
     "gold_schema.sql",
@@ -37,6 +40,24 @@ def get_engine():
     return create_engine(url)
 
 
+def run_python_script(filepath: Path):
+    logger.info(f"running {filepath.name}...")
+    result = subprocess.run(
+        [sys.executable, str(filepath)],
+        capture_output=True,
+        text=True,
+    )
+
+    if result.stdout:
+        logger.info(f"{filepath.name} output:\n{result.stdout}")
+
+    if result.returncode != 0:
+        logger.error(f"{filepath.name} failed:\n{result.stderr}")
+        raise RuntimeError(f"{filepath.name} exited with code {result.returncode}")
+
+    logger.info(f"done: {filepath.name}")
+
+
 def run_sql_file(connection, filepath: Path):
     logger.info(f"running {filepath.name}...")
     sql = filepath.read_text()
@@ -56,15 +77,25 @@ def run_sql_file(connection, filepath: Path):
 
 def main():
     logger.info("pipeline started")
+
+    # python steps run first, before any DB connection is needed
+    for filename in PIPELINE_STEPS:
+        if filename.endswith(".py"):
+            filepath = SRC_DIR / filename
+            if not filepath.exists():
+                raise FileNotFoundError(f"missing pipeline file: {filepath}")
+            run_python_script(filepath)
+
     engine = get_engine()
 
     with engine.begin() as connection:
         try:
-            for filename in PIPELINE_FILES:
-                filepath = SRC_DIR / filename
-                if not filepath.exists():
-                    raise FileNotFoundError(f"missing pipeline file: {filepath}")
-                run_sql_file(connection, filepath)
+            for filename in PIPELINE_STEPS:
+                if filename.endswith(".sql"):
+                    filepath = SRC_DIR / filename
+                    if not filepath.exists():
+                        raise FileNotFoundError(f"missing pipeline file: {filepath}")
+                    run_sql_file(connection, filepath)
 
             logger.info("pipeline complete, all changes committed")
 
