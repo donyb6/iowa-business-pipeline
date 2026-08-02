@@ -146,7 +146,7 @@ SELECT ho_address_1, ho_address_2, ho_city, ho_zip, ho_state
 FROM silver_active_iowa_business
 WHERE ho_city REGEXP '^[A-Za-z]{2}$'; -- ho city entries (MO, NE, OP, TA, UP, DM, NY, WE ,CH) are partially ho_city entries which should be corrected in full, but also, some ho_address_2(TIPTON, DEEP RIVER, ANKENY, DES MOINES, KELLEY, IOWA CITY, CEDAR FALLS, PERRY, BELLEVUE, BELLEVUE, RIPPEY, LENOX) entries must be in ho_city. this is a data quality issue.
 
--- update ra and ho fields to correct the data quality issues found.
+-- update ra and ho fields to correct the data quality issues found. this will be done in silver_clean_update.sql
 
 
 -- prep ra_location and ho_location fields for geocoding
