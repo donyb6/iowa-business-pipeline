@@ -55,3 +55,7 @@ LEFT JOIN gold_dim_ra_location AS ra
     ON f.ra_location_key = ra.ra_location_key
 LEFT JOIN gold_dim_ho_location AS ho
     ON f.ho_location_key = ho.ho_location_key;
+
+SELECT COUNT(*) AS total_number_of_active_businesses
+FROM gold_fact_active_business AS f;
+
