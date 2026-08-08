@@ -156,4 +156,4 @@ SELECT ra_state, COUNT(*) AS business_count
 FROM gold_active_iowa_business
 WHERE ra_state IS NOT NULL 
 GROUP BY ra_state
-ORDER BY business_count DESC; -- from this query, there are states which should be city names, this is a data quality issue. i will need to clean aga
+ORDER BY business_count DESC; -- from this query, there are states which should be city names, this is a data quality issue. i will need to clean again but from the silver layer
