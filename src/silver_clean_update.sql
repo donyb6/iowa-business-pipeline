@@ -159,16 +159,6 @@ WHERE ra_city IN ('CL','DA','LE');
 
 UPDATE silver_active_iowa_business
 SET
-    ra_address_2_corrected = ra_city,
-    ra_address_2_altered = TRUE,
-    ra_city_corrected = ra_address_2,
-    ra_city_altered = TRUE,
-    ra_state_corrected = NULL,
-    ra_state_altered = TRUE
-WHERE corp_number = '626601';
-
-UPDATE silver_active_iowa_business
-SET
     ra_city_corrected = ra_state,
     ra_city_altered = TRUE,
     ra_state_corrected = NULL,
