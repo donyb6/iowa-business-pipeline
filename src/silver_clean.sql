@@ -115,3 +115,8 @@ FROM silver_active_iowa_business;
 SELECT ra_location, 
         ST_GeomFromText(ra_location) AS ra_test
 FROM silver_active_iowa_business;
+
+
+SELECT corp_number, legal_name, registered_agent, ra_address_1, ra_address_2, ra_city, ra_zip, ra_state
+FROM silver_active_iowa_business
+WHERE ra_state REGEXP '^[A-Za-z]{3,}$';
