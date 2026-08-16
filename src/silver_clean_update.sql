@@ -167,6 +167,14 @@ SET
     ra_state_altered = TRUE
 WHERE corp_number = '626601';
 
+UPDATE silver_active_iowa_business
+SET
+    ra_city_corrected = ra_state,
+    ra_city_altered = TRUE,
+    ra_state_corrected = NULL,
+    ra_state_altered = TRUE
+WHERE corp_number IN ('865397', '592465', '867103', '810575');
+
 
 UPDATE silver_active_iowa_business
 SET
