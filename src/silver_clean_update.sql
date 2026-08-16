@@ -173,7 +173,8 @@ SET
     ra_city_altered = TRUE,
     ra_state_corrected = NULL,
     ra_state_altered = TRUE
-WHERE corp_number IN ('865397', '592465', '867103', '810575');
+WHERE ra_state REGEXP '^[A-Za-z ]{3,}$'
+  AND ra_city IS NULL;
 
 
 UPDATE silver_active_iowa_business
