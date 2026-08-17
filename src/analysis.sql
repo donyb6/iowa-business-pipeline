@@ -11,7 +11,7 @@ SELECT *
 FROM gold_dim_ra_location;
 
 SELECT *
-FROM gold_fact_business;
+FROM gold_fact_active_business;
 
 CREATE OR REPLACE VIEW gold_active_iowa_business AS
 SELECT
@@ -163,3 +163,28 @@ SELECT ra_state, COUNT(*) AS business_count
 FROM gold_active_iowa_business
 GROUP BY ra_state
 ORDER BY business_count DESC;
+
+-- year-over-year growth rate
+SELECT
+    year,
+    COUNT(*) AS registrations,
+    COUNT(*) - LAG(COUNT(*)) OVER (ORDER BY year) AS change_from_prior_year
+FROM gold_active_iowa_business
+WHERE year IS NOT NULL
+GROUP BY year
+ORDER BY year;
+
+-- corporation type mix over the last 5 years
+SELECT year, corporation_type, COUNT(*) AS business_count
+FROM gold_active_iowa_business
+WHERE year >= (SELECT MAX(year) FROM gold_active_iowa_business) - 5
+GROUP BY year, corporation_type
+ORDER BY year, business_count DESC;
+
+-- top 10 registered agents by number of businesses represented
+SELECT registered_agent, COUNT(*) AS business_count
+FROM gold_active_iowa_business
+WHERE registered_agent IS NOT NULL
+GROUP BY registered_agent
+ORDER BY business_count DESC
+LIMIT 10;
