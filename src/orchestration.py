@@ -16,8 +16,7 @@ LOG_DIR = PROJECT_ROOT / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "pipeline.log"
 
-# order matters: extract raw data, load it, then bronze -> silver -> gold
-# silver_clean.sql is superseded by silver_clean_update.sql, which is self-contained
+
 PIPELINE_STEPS = [
     "extract.py",
     "load_raw.py",
