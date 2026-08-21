@@ -259,11 +259,14 @@ SET
         END
 WHERE ho_city IN ('DM','CH','WE','MO','NE','OP','TA','UP','NY');
 
+
 UPDATE silver_active_iowa_business
 SET
+    ho_zip_corrected = ho_country,
+    ho_zip_altered = TRUE,
     ho_country_altered = TRUE,
     ho_country_corrected = NULL
-WHERE ho_country  REGEXP '^[0-9]+$'
+WHERE ho_country REGEXP '^[0-9]+$';
 
 ALTER TABLE silver_active_iowa_business
 ADD ho_point POINT,
