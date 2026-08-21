@@ -222,12 +222,16 @@ AND ho_zip IS NULL;
 
 UPDATE silver_active_iowa_business
 SET
+    ho_city_corrected = ho_state,
     ho_state_altered = TRUE,
     ho_state_corrected = NULL,
-    ho_city_altered = TRUE,
-    ho_city_corrected = ho_state
-WHERE ho_state REGEXP '^[A-Za-z]{3,}$'
+    ho_city_altered = TRUE
+WHERE LENGTH(ho_state) > 2
 AND ho_city IS NULL;
+
+SELECT corp_number, ho_address_1, ho_address_2, ho_state, ho_state_corrected, ho_city, ho_city_corrected
+FROM silver_active_iowa_business
+WHERE LENGTH(ho_state_corrected) > 2;
 
 
 UPDATE silver_active_iowa_business
