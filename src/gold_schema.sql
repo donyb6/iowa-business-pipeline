@@ -53,7 +53,6 @@ CREATE TABLE gold_dim_ra_location (
     city VARCHAR(255),
     state VARCHAR(255),
     zip VARCHAR(255),
-    country VARCHAR(255),
     latitude VARCHAR(255),
     longitude VARCHAR(255)
 );
