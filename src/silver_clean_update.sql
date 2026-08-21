@@ -282,3 +282,17 @@ WHERE ho_location IS NOT NULL
 ALTER TABLE silver_active_iowa_business
 DROP COLUMN ho_location,
 DROP COLUMN ra_location;
+
+-- create indexes on the silver_active_iowa_business table for performance optimisation
+CREATE INDEX idx_corp_number
+ON silver_active_iowa_business (corp_number(10));
+
+CREATE INDEX idx_ra_city
+ON silver_active_iowa_business (ra_city_corrected(30));
+
+CREATE INDEX idx_ra_state
+ON silver_active_iowa_business (ra_state_corrected(5));
+
+CREATE INDEX idx_ho_city
+ON silver_active_iowa_business (ho_city_corrected(60));
+
