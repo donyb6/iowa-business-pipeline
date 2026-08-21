@@ -296,3 +296,11 @@ ON silver_active_iowa_business (ra_state_corrected(5));
 CREATE INDEX idx_ho_city
 ON silver_active_iowa_business (ho_city_corrected(60));
 
+CREATE INDEX idx_ho_state
+ON silver_active_iowa_business (ho_state_corrected(5));
+
+CREATE INDEX idx_registered_agent
+ON silver_active_iowa_business (registered_agent(80));
+
+CREATE INDEX idx_legal_name
+ON silver_active_iowa_business (legal_name(150));
