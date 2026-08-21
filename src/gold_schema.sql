@@ -58,14 +58,13 @@ CREATE TABLE gold_dim_ra_location (
     longitude VARCHAR(255)
 );
 
-INSERT INTO gold_dim_ra_location (address_1, address_2, city, state, zip, country, latitude, longitude)
+INSERT INTO gold_dim_ra_location (address_1, address_2, city, state, zip, latitude, longitude)
 SELECT DISTINCT
     ra_address_1_corrected,
     ra_address_2_corrected,
     ra_city_corrected,
     ra_state_corrected,
     ra_zip_corrected,
-    'USA',
     ra_latitude,
     ra_longitude
 FROM silver_active_iowa_business;
