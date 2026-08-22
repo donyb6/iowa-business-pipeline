@@ -233,6 +233,7 @@ SELECT corp_number, ho_address_1, ho_address_2, ho_state, ho_state_corrected, ho
 FROM silver_active_iowa_business
 WHERE LENGTH(ho_state_corrected) > 2;
 
+/*
 UPDATE silver_active_iowa_business
 SET
     ho_city_corrected = ho_state,
@@ -240,6 +241,8 @@ SET
     ho_state_corrected = NULL,
     ho_city_altered = TRUE
 WHERE corp_number = 626601;
+*/
+
 
 UPDATE silver_active_iowa_business
 SET
@@ -287,6 +290,9 @@ DROP COLUMN ra_location;
 CREATE INDEX idx_corp_number
 ON silver_active_iowa_business (corp_number(10));
 
+CREATE INDEX idx_legal_name
+ON silver_active_iowa_business (legal_name(150));
+
 CREATE INDEX idx_ra_city
 ON silver_active_iowa_business (ra_city_corrected(30));
 
@@ -301,6 +307,3 @@ ON silver_active_iowa_business (ho_state_corrected(5));
 
 CREATE INDEX idx_registered_agent
 ON silver_active_iowa_business (registered_agent(80));
-
-CREATE INDEX idx_legal_name
-ON silver_active_iowa_business (legal_name(150));
